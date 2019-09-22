@@ -117,7 +117,7 @@ class PhoneLoginActivity : AppCompatActivity() {
                 storedVerificationId = verificationId
                 resendToken = token
 
-                Toast.makeText(this@PhoneLoginActivity, "Code has sent...", Toast.LENGTH_LONG)
+                Toast.makeText(this@PhoneLoginActivity, "Code has sent....", Toast.LENGTH_LONG)
                     .show()
             }
 
