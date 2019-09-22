@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "790699160924",
+    "firebase_url": "https://chitti-chat-3fae2.firebaseio.com",
+    "project_id": "chitti-chat-3fae2",
+    "storage_bucket": "chitti-chat-3fae2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790699160924:android:3c2de4865888fdf9427d99",
+        "android_client_info": {
+          "package_name": "com.dasharath.chittichat2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790699160924-ksgl3vhvbulnr4c7v61fc4rqnt5a01r4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dasharath.chittichat2",
+            "certificate_hash": "4b8f3c451931d1a1c904886b1fa9423e416e7b18"
+          }
+        },
+        {
+          "client_id": "790699160924-irbg06cuiffp37kq05o3k8nackbnh5eq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5BQyAhq4_BgBbqW1WN-UZGHpDSaXB0XM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790699160924-irbg06cuiffp37kq05o3k8nackbnh5eq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

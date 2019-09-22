@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.groupchats.GroupChatActivity">
+
+    <include
+        android:id="@+id/groupChatBarLayout"
+        layout="@layout/app_bar_layout"/>
+
+    <ScrollView
+        android:id="@+id/scrollViewGroupChat"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/groupChatBarLayout"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayoutGroupChat">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvGroupChatTextDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:textColor="@android:color/background_dark"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="60dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutGroupChat"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etInputGroupMessage"
+            android:hint="Please write your message here..."
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="17dp"/>
+
+        <ImageButton
+            android:id="@+id/btnSendMessageGroupChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/send_message"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
