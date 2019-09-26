@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import com.dasharath.chittichat2.MainActivity
 import com.dasharath.chittichat2.R
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.google.firebase.auth.FirebaseAuth
@@ -73,6 +74,8 @@ class GroupChatActivity : AppCompatActivity() {
     private fun init() {
         currentGroupName = intent.getStringExtra(CommonUtils.GROUP_NAME)
         setSupportActionBar(groupChatBarLayout as Toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = currentGroupName
 
         mAuth = FirebaseAuth.getInstance()

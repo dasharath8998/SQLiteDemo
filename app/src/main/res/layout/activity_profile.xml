@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.ProfileActivity"
+    android:background="@drawable/profile_activity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgVisitProfile"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:src="@drawable/profile_image" />
+
+    <TextView
+        android:id="@+id/tvVisitProfileUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:layout_below="@id/imgVisitProfile"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvVisitProfileStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="hi all"
+        android:layout_below="@id/tvVisitProfileUsername"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="25dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btnSendMessageRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvVisitProfileStatus"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="65dp"
+        android:layout_marginRight="65dp"
+        android:textColor="@android:color/background_light"
+        android:background="@drawable/buttons"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Send Message"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btnDeclineMessageRequest"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSendMessageRequest"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="65dp"
+        android:layout_marginRight="65dp"
+        android:textColor="@android:color/background_light"
+        android:background="@drawable/buttons"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Cancel Chat Request"
+        android:textAllCaps="false"/>
+
+</RelativeLayout>

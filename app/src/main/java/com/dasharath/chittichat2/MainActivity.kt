@@ -11,8 +11,10 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import com.dasharath.chittichat2.ui.findfriends.FindFriendsActivity
 import com.dasharath.chittichat2.ui.settings.SettingsActivity
 import com.dasharath.chittichat2.ui.login.LoginActivity
+import com.dasharath.chittichat2.utils.CommonUtils
 import com.dasharath.chittichat2.viewpager.TabsAccessorAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private var currentUser: FirebaseUser? = null
     private var mAuth: FirebaseAuth? = null
     private var rootRef: DatabaseReference? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -89,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         super.onOptionsItemSelected(item)
         when (item?.itemId) {
             R.id.menuFindFriends -> {
-
+                startActivity(Intent(this@MainActivity, FindFriendsActivity::class.java))
             }
             R.id.menuSettings -> {
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
@@ -99,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                 sendUserToLogInActivity()
             }
             R.id.menuCreateGroup -> {
-                requestNewGroup()
+                //requestNewGroup()
             }
         }
         return true
