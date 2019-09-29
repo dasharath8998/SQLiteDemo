@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 import android.R.attr.data
 import android.R.attr.process
 import android.app.ProgressDialog
+import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -42,6 +43,10 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        setSupportActionBar(appBarSettings as Toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = "Settings"
         mAuth = FirebaseAuth.getInstance()
         cuurentUserId = mAuth?.currentUser?.uid!!
         rootRef = FirebaseDatabase.getInstance().reference
@@ -66,7 +71,7 @@ class SettingsActivity : AppCompatActivity() {
 
                     if(exist && hasImage){
                         val image = snapshot.child(CommonUtils.IMAGE).value.toString()
-                        Glide.with(this@SettingsActivity).load(image).into(imgSettingProfile)
+                        Glide.with(this@SettingsActivity).load(image).placeholder(R.drawable.profile_image).into(imgSettingProfile)
                     }
 
                     if (exist && hasName && hasImage) {
@@ -120,11 +125,11 @@ class SettingsActivity : AppCompatActivity() {
         } else if (TextUtils.isEmpty(status)) {
             Toast.makeText(this@SettingsActivity, "Please write your statuse first....", Toast.LENGTH_LONG).show()
         } else {
-            val profile = HashMap<String, String>()
+            val profile = HashMap<String, Any>()
             profile.put("uid", cuurentUserId)
             profile.put("name", username)
             profile.put("status", status)
-            rootRef?.child(CommonUtils.USERS_DB_REF)?.child(cuurentUserId)?.setValue(profile)
+            rootRef?.child(CommonUtils.USERS_DB_REF)?.child(cuurentUserId)?.updateChildren(profile)
                 ?.addOnCompleteListener {
                     if (it.isSuccessful) {
                         startActivity(

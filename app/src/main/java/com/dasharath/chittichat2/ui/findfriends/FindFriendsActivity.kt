@@ -4,71 +4,80 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.BR
 import com.dasharath.chittichat2.R
 import com.dasharath.chittichat2.databinding.ItemUserDisplayBinding
 import com.dasharath.chittichat2.ui.profile.ProfileActivity
 import com.dasharath.chittichat2.utils.CommonUtils
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.github.nitrico.lastadapter.LastAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_find_friends.*
+import kotlinx.android.synthetic.main.item_user_request_display.view.*
 
 class FindFriendsActivity : AppCompatActivity() {
 
-    private var mAuth: FirebaseAuth? = null
     private var rootRef: DatabaseReference? = null
-    private var cuurentUserId = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_friends)
+        init()
+        setAdapter()
+    }
+
+    private fun init() {
         setSupportActionBar(appBarFindFriend as Toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = "Find Friends"
-
-        mAuth = FirebaseAuth.getInstance()
-        cuurentUserId = mAuth?.currentUser?.uid!!
-        rootRef = FirebaseDatabase.getInstance().reference
-
-        val userList = ArrayList<ContactsModel>()
-
-        val database = rootRef?.child(CommonUtils.USERS_DB_REF)
-        database?.addValueEventListener(object : ValueEventListener {
-
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                userList.clear()
-                for(sna in snapshot.children){
-                    var users = sna.getValue(ContactsModel::class.java)
-                    userList.add(users!!)
-                    Log.d("data",users.toString())
-                }
-                setAdapter(userList)
-            }
-
-        })
+        rootRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.USERS_DB_REF)
+        rvFindFriends.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun setAdapter(list: ArrayList<ContactsModel>) {
+    private fun setAdapter() {
+        val option = FirebaseRecyclerOptions.Builder<ContactsModel>()
+            .setQuery(rootRef!!, ContactsModel::class.java).build()
 
-        rvFindFriends.layoutManager = LinearLayoutManager(this@FindFriendsActivity)
-        LastAdapter(list, BR.contactModel).map<ContactsModel, ItemUserDisplayBinding>(R.layout.item_user_display) {
-            onBind {
-                Glide.with(this@FindFriendsActivity).load(list[it.adapterPosition].image.toString()).placeholder(R.drawable.profile_image).into(it.binding.imgItemUserProfile)
-            }
-            onClick {
-                val visitUserId = list[it.adapterPosition].uid
-                startActivity(Intent(this@FindFriendsActivity,ProfileActivity::class.java).putExtra(CommonUtils.UID,visitUserId))
-            }
-        }.into(rvFindFriends)
+        val adapter =
+            object : FirebaseRecyclerAdapter<ContactsModel, FindFriendViewHolder>(option) {
+                override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FindFriendViewHolder {
+                    val view = LayoutInflater.from(this@FindFriendsActivity)
+                        .inflate(R.layout.item_user_request_display, parent, false)
+                    return FindFriendViewHolder(view)
+                }
 
+                override fun onBindViewHolder(holder: FindFriendViewHolder, position: Int, model: ContactsModel) {
+                    holder.userName?.text = model.name
+                    holder.userStatus?.text = model.status
+                    Glide.with(this@FindFriendsActivity).load(model.image).placeholder(R.drawable.profile_image).into(holder.profile!!)
+                    holder.itemView.setOnClickListener {
+                        startActivity(Intent(this@FindFriendsActivity,ProfileActivity::class.java).putExtra(CommonUtils.UID,getRef(position).key))
+                    }
+                }
+            }
+        rvFindFriends.adapter = adapter
+        adapter.startListening()
+    }
+
+    class FindFriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var userName: TextView? = null
+        var userStatus: TextView? = null
+        var profile: CircleImageView? = null
+        init {
+            userName = itemView.tvRequestProfileName
+            userStatus = itemView.tvItemRequestStatus
+            profile = itemView.imgItemUserRequestProfile
+        }
     }
 }

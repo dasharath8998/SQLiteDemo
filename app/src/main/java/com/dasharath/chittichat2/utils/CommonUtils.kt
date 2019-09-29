@@ -2,6 +2,7 @@ package com.dasharath.chittichat2.utils
 
 object CommonUtils {
 
+    const val MESSAGES = "Messages"
     const val SAVED = "Saved"
     const val CONTACTS = "Contacts"
     const val RECEIVED = "received"

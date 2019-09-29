@@ -8,3 +8,11 @@ data class ContactsModel(
 ){
     constructor() : this("","","","")
 }
+
+data class Messages(
+    var from: String,
+    var message: String,
+    var type: String
+){
+    constructor():this("","","")
+}
