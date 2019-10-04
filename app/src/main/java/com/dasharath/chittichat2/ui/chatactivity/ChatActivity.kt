@@ -96,6 +96,7 @@ class ChatActivity : AppCompatActivity() {
                         val messages = dataSnapshot.getValue(Messages::class.java)
                         messagesList?.add(messages!!)
                         messageAdapter?.notifyDataSetChanged()
+                        rvPrivateChatMessagesList.smoothScrollToPosition(rvPrivateChatMessagesList.adapter?.itemCount!!)
                     }
 
                     override fun onChildRemoved(p0: DataSnapshot) {

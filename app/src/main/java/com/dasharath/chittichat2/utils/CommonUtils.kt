@@ -2,6 +2,8 @@ package com.dasharath.chittichat2.utils
 
 object CommonUtils {
 
+    const val DEVICE_TOKEN = "device_token"
+    const val NOTIFICATION = "Notification"
     const val MESSAGES = "Messages"
     const val SAVED = "Saved"
     const val CONTACTS = "Contacts"

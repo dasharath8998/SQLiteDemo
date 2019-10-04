@@ -16,6 +16,7 @@ class ProfileActivity : AppCompatActivity() {
     private var userRef: DatabaseReference? = null
     private var chatReqRef: DatabaseReference? = null
     private var contactRef: DatabaseReference? = null
+    private var notificationRef: DatabaseReference? = null
 
     private var receverUserId: String = ""
     private var currentStat: String = ""
@@ -27,6 +28,7 @@ class ProfileActivity : AppCompatActivity() {
         userRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.USERS_DB_REF)
         chatReqRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.CHAT_REQUEST)
         contactRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.CONTACTS)
+        notificationRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.NOTIFICATION)
         mAuth = FirebaseAuth.getInstance()
 
         receverUserId = intent.getStringExtra(CommonUtils.UID)
@@ -188,9 +190,18 @@ class ProfileActivity : AppCompatActivity() {
             if(it.isSuccessful){
                 chatReqRef?.child(receverUserId)?.child(senderUserId)?.child(CommonUtils.REQUEST_TYPE)?.setValue(CommonUtils.RECEIVED)?.addOnCompleteListener {
                     if(it.isSuccessful){
-                        btnSendMessageRequest.isEnabled = true
-                        currentStat = "request_sent"
-                        btnSendMessageRequest.text = "Cancel chat request"
+
+                        val chatNotificationMap: HashMap<String,String> = HashMap()
+                        chatNotificationMap.put("from",senderUserId)
+                        chatNotificationMap.put("type","request")
+
+                        notificationRef?.child(receverUserId)?.push()?.setValue(chatNotificationMap)?.addOnCompleteListener {
+                            if(it.isSuccessful){
+                                btnSendMessageRequest.isEnabled = true
+                                currentStat = "request_sent"
+                                btnSendMessageRequest.text = "Cancel chat request"
+                            }
+                        }
                     }
                 }
             }

@@ -75,8 +75,11 @@ class ChatFragment : Fragment() {
                             }
                             holder.userName?.text = name
                             holder.userStatus?.text = "Last Seen: " + "\n" + "Date" + " Time"
-                            Glide.with(context!!).load(image).placeholder(R.drawable.profile_image)
-                                .into(holder.profile!!)
+                            if(context != null) {
+                                Glide.with(context!!).load(image)
+                                    .placeholder(R.drawable.profile_image)
+                                    .into(holder.profile!!)
+                            }
 
                             holder.itemView.setOnClickListener {
                                 startActivity(Intent(context,ChatActivity::class.java)

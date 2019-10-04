@@ -16,7 +16,8 @@
         android:id="@+id/rvPrivateChatMessagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appBarChat"/>
+        android:layout_below="@id/appBarChat"
+        android:layout_above="@+id/linearPrivateChat"/>
 
     <LinearLayout
         android:id="@+id/linearPrivateChat"

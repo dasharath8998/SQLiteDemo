@@ -50,14 +50,15 @@ class MessageAdapter(var userMessageList:List<Messages>,var context:Context): Re
         })
         if(fromMessageType == "text"){
             holder.tvReceiverMessageText?.visibility = View.GONE
+            holder.tvSenderMessageText?.visibility = View.GONE
             holder.imgMessages?.visibility = View.GONE
 
             if(fromUserId == messageSenderId){
+                holder.tvSenderMessageText?.visibility = View.VISIBLE
                 holder.tvSenderMessageText?.setBackgroundResource(R.drawable.sender_messages_layout)
                 holder.tvSenderMessageText?.setTextColor(Color.BLACK)
                 holder.tvSenderMessageText?.text = messages.message
             }else{
-                holder.tvSenderMessageText?.visibility = View.GONE
                 holder.imgMessages?.visibility = View.VISIBLE
                 holder.tvReceiverMessageText?.visibility = View.VISIBLE
 
