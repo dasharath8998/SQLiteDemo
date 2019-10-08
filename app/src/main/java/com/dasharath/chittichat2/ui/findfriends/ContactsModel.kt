@@ -12,7 +12,12 @@ data class ContactsModel(
 data class Messages(
     var from: String,
     var message: String,
-    var type: String
+    var type: String,
+    var to: String,
+    var messagaeId: String,
+    var time: String,
+    var date: String,
+    var name: String
 ){
-    constructor():this("","","")
+    constructor():this("","","","","","","","")
 }

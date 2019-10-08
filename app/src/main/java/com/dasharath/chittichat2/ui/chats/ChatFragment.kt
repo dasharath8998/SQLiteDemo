@@ -21,7 +21,9 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.fragment_chats.*
 import kotlinx.android.synthetic.main.fragment_chats.view.*
+import kotlinx.android.synthetic.main.fragment_chats.view.aviLoading
 import kotlinx.android.synthetic.main.item_user_request_display.view.*
 
 class ChatFragment : Fragment() {
@@ -30,6 +32,7 @@ class ChatFragment : Fragment() {
     private var userRef: DatabaseReference? = null
     private var mAuth: FirebaseAuth? = null
     private var currentUserId: String = ""
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_chats, container, false)
         view.rvChatsFragment.layoutManager = LinearLayoutManager(context)
@@ -42,6 +45,7 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.aviLoading.smoothToShow()
         setAdapter(view)
     }
 
@@ -61,20 +65,38 @@ class ChatFragment : Fragment() {
                 val userId = getRef(position).key
                 userRef?.child(userId!!)?.addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
-
                     }
 
                     @SuppressLint("SetTextI18n")
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
+
                             val name = dataSnapshot.child(CommonUtils.NAME).value.toString()
                             val status = dataSnapshot.child(CommonUtils.STATUS).value.toString()
                             var image = ""
+
                             if (dataSnapshot.hasChild(CommonUtils.IMAGE)) {
                                 image = dataSnapshot.child(CommonUtils.IMAGE).value.toString()
                             }
+
+                            if(dataSnapshot.child(CommonUtils.USER_STATE).hasChild(CommonUtils.STATE)){
+                                val state = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.STATE).value.toString()
+                                val time = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.TIME).value.toString()
+                                val date = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.DATE).value.toString()
+
+                                if(state == "online"){
+                                    holder.userStatus?.text = "Online"
+                                } else if (state == "offline") {
+                                    holder.userStatus?.text = "Last seen: $date $time"
+                                }
+
+                            } else {
+                                holder.userStatus?.text = "Offline"
+                            }
+
                             holder.userName?.text = name
-                            holder.userStatus?.text = "Last Seen: " + "\n" + "Date" + " Time"
+
+
                             if(context != null) {
                                 Glide.with(context!!).load(image)
                                     .placeholder(R.drawable.profile_image)
@@ -87,6 +109,8 @@ class ChatFragment : Fragment() {
                                     .putExtra(CommonUtils.NAME,name)
                                     .putExtra(CommonUtils.IMAGE,image))
                             }
+
+                            view.aviLoading.smoothToHide()
                         }
                     }
 

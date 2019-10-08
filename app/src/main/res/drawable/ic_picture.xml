@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="140"
+    android:viewportHeight="140">
+  <path
+      android:pathData="M70,70m-64,0a64,64 0,1 1,128 0a64,64 0,1 1,-128 0"
+      android:fillColor="#e56353"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m70,134c30.795,0 56.503,-21.753 62.614,-50.73l-27.317,-27.312 -0.01,0.01c-0.98,-1.15 -2.42,-1.9 -4.05,-1.9h-4.71l-22.55,-22.54c-0.88,-0.94 -2.11,-1.53 -3.49,-1.53 -2.65,0 -4.79,2.15 -4.79,4.79 0,0.66 0.13,1.28 0.37,1.85l-19.81,17.43h-7.49c-2.95,0 -5.34,2.4 -5.34,5.35v40.72c0,1.22 0.42,2.34 1.11,3.24h-0.01l0.11,0.11c0.23,0.29 0.5,0.56 0.79,0.8l29.492,29.493c1.678,0.132 3.369,0.219 5.08,0.219z"
+      android:strokeAlpha="0.1"
+      android:fillAlpha="0.1"/>
+  <path
+      android:pathData="m43.601,58.703 l-1.139,-1.294 27.995,-24.63 27.665,24.34 -1.139,1.294 -26.526,-23.338z"
+      android:fillColor="#474c5b"/>
+  <path
+      android:pathData="m101.233,54.072h-62.466c-2.951,0 -5.343,2.392 -5.343,5.344v40.728c0,2.951 2.392,5.344 5.343,5.344h62.466c2.951,0 5.343,-2.392 5.343,-5.344v-40.728c0,-2.951 -2.392,-5.344 -5.343,-5.344z"
+      android:fillColor="#fcd462"/>
+  <path
+      android:pathData="m39.654,61.41h60.692v37.364h-60.692z"
+      android:fillColor="#00abee"/>
+  <path
+      android:pathData="m80.536,73.016 l-11.303,21.934h22.606z"
+      android:fillColor="#474c5b"/>
+  <path
+      android:pathData="m63.044,66.07 l-14.882,28.88h29.765z"
+      android:fillColor="#4d5c7d"/>
+  <path
+      android:pathData="M73.962,69.394m-3.323,0a3.323,3.323 0,1 1,6.646 0a3.323,3.323 0,1 1,-6.646 0"
+      android:fillColor="#fcd462"/>
+  <path
+      android:pathData="M70.487,34.789m-4.789,0a4.789,4.789 0,1 1,9.578 0a4.789,4.789 0,1 1,-9.578 0"
+      android:fillColor="#ebf0f3"/>
+  <path
+      android:pathData="M70.487,34.789m-2.446,0a2.446,2.446 0,1 1,4.892 0a2.446,2.446 0,1 1,-4.892 0"
+      android:fillColor="#4d5c7d"/>
+</vector>

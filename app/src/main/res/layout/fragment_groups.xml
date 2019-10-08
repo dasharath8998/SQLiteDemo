@@ -3,11 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.groupchats.GroupsFragment">
+
+    <include
+        android:id="@+id/groupListBarLayout"
+        layout="@layout/app_bar_layout"/>
 
     <ListView
         android:id="@+id/listGroup"
+        android:layout_below="@id/groupListBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/aviLoadingGroups"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="60dp"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        app:indicatorName="SemiCircleSpinIndicator"
+        app:indicatorColor="@color/colorPrimaryDark"
+        android:layout_height="60dp"/>
 
 </RelativeLayout>

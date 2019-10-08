@@ -20,8 +20,10 @@ import android.R.attr.process
 import android.app.ProgressDialog
 import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
+import com.dasharath.chittichat2.utils.CommonFunction
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.app_bar_layout.*
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -37,16 +39,14 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         init()
-        etSettingsUsername.visibility = View.INVISIBLE
         retriveUserInformation()
         listeners()
     }
 
     private fun init() {
         setSupportActionBar(appBarSettings as Toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = "Settings"
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        tvTitle.text = "Settings"
         mAuth = FirebaseAuth.getInstance()
         cuurentUserId = mAuth?.currentUser?.uid!!
         rootRef = FirebaseDatabase.getInstance().reference
@@ -71,7 +71,7 @@ class SettingsActivity : AppCompatActivity() {
 
                     if(exist && hasImage){
                         val image = snapshot.child(CommonUtils.IMAGE).value.toString()
-                        Glide.with(this@SettingsActivity).load(image).placeholder(R.drawable.profile_image).into(imgSettingProfile)
+                        Glide.with(this@SettingsActivity).load(image).placeholder(R.drawable.profile_image).error(R.drawable.profile_image).into(imgSettingProfile)
                     }
 
                     if (exist && hasName && hasImage) {
@@ -95,7 +95,6 @@ class SettingsActivity : AppCompatActivity() {
                         etSettingsStatus.setText(status)
 
                     } else {
-                        etSettingsUsername.visibility = View.VISIBLE
                         Toast.makeText(this@SettingsActivity, "Please set & update your profile information", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -113,6 +112,11 @@ class SettingsActivity : AppCompatActivity() {
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
                 .start(this)
+        }
+
+        imgBack.setOnClickListener {
+            CommonFunction.hideKeyboard(this@SettingsActivity)
+            onBackPressed()
         }
     }
 

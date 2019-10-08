@@ -59,6 +59,7 @@
 
                         <ImageView
                             android:id="@+id/imgOnlineStatus"
+                            android:visibility="gone"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/online" />

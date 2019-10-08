@@ -37,6 +37,6 @@
         android:text="Last Seen"
         android:textColor="@android:color/background_light"
         android:textStyle="bold"
-        android:textSize="14sp"/>
+        android:textSize="12sp"/>
 
 </RelativeLayout>

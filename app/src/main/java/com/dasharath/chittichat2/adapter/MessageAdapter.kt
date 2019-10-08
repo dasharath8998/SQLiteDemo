@@ -1,10 +1,12 @@
 package com.dasharath.chittichat2.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,7 +21,6 @@ import kotlinx.android.synthetic.main.item_messages_layout.view.*
 class MessageAdapter(var userMessageList:List<Messages>,var context:Context): RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     private var mAuth: FirebaseAuth? = null
-    private var usersRef: DatabaseReference? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         var view = LayoutInflater.from(parent.context).inflate(R.layout.item_messages_layout,parent,false)
         mAuth = FirebaseAuth.getInstance()
@@ -28,43 +29,46 @@ class MessageAdapter(var userMessageList:List<Messages>,var context:Context): Re
 
     override fun getItemCount(): Int = userMessageList.size
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val messageSenderId = mAuth?.currentUser?.uid!!
         val messages = userMessageList[position]
 
         val fromUserId = messages.from
         val fromMessageType = messages.type
-        usersRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.USERS_DB_REF).child(fromUserId)
-        usersRef?.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
 
-            }
+        holder.tvReceiverMessageText?.visibility = View.GONE
+        holder.tvSenderMessageText?.visibility = View.GONE
+        holder.imgMessageSenderPicture?.visibility = View.GONE
+        holder.imgMessageReceiverPicture?.visibility = View.GONE
+        holder.tvReceiverDateTime?.visibility = View.GONE
+        holder.tvSenderDateTime?.visibility = View.GONE
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var receiverImage = ""
-                if(dataSnapshot.hasChild(CommonUtils.IMAGE)){
-                    receiverImage = dataSnapshot.child(CommonUtils.IMAGE).value.toString()
-                }
-                Glide.with(context).load(receiverImage).placeholder(R.drawable.profile_image).into(holder.imgMessages!!)
-            }
-        })
         if(fromMessageType == "text"){
-            holder.tvReceiverMessageText?.visibility = View.GONE
-            holder.tvSenderMessageText?.visibility = View.GONE
-            holder.imgMessages?.visibility = View.GONE
 
             if(fromUserId == messageSenderId){
                 holder.tvSenderMessageText?.visibility = View.VISIBLE
+                holder.tvSenderDateTime?.visibility = View.VISIBLE
                 holder.tvSenderMessageText?.setBackgroundResource(R.drawable.sender_messages_layout)
                 holder.tvSenderMessageText?.setTextColor(Color.BLACK)
                 holder.tvSenderMessageText?.text = messages.message
+                holder.tvSenderDateTime?.text = messages.time +" - "+ messages.date
             }else{
-                holder.imgMessages?.visibility = View.VISIBLE
                 holder.tvReceiverMessageText?.visibility = View.VISIBLE
+                holder.tvReceiverDateTime?.visibility = View.VISIBLE
 
                 holder.tvReceiverMessageText?.setBackgroundResource(R.drawable.receiver_messages_layout)
                 holder.tvReceiverMessageText?.setTextColor(Color.BLACK)
                 holder.tvReceiverMessageText?.text = messages.message
+                holder.tvReceiverDateTime?.text = messages.time +" - "+ messages.date
+            }
+        }else if(fromMessageType == CommonUtils.IMAGE){
+            if (fromUserId == messageSenderId){
+                holder.imgMessageSenderPicture?.visibility = View.VISIBLE
+                Glide.with(context).load(messages.message).into(holder.imgMessageSenderPicture!!)
+            } else {
+                holder.imgMessageReceiverPicture?.visibility = View.VISIBLE
+                Glide.with(context).load(messages.message).into(holder.imgMessageReceiverPicture!!)
             }
         }
     }
@@ -72,12 +76,20 @@ class MessageAdapter(var userMessageList:List<Messages>,var context:Context): Re
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvSenderMessageText: TextView? = null
         var tvReceiverMessageText: TextView? = null
-        var imgMessages: CircleImageView? = null
+        var tvReceiverDateTime: TextView? = null
+        var tvSenderDateTime: TextView? = null
+        var imgMessageSenderPicture: ImageView? = null
+        var imgMessageReceiverPicture: ImageView? = null
 
         init {
+
             tvSenderMessageText = itemView.tvSenderMessageText
             tvReceiverMessageText = itemView.tvReceiverMessageText
-            imgMessages = itemView.imgItemMessageProfile
+            tvReceiverDateTime = itemView.tvTimeDateReceiver
+            tvSenderDateTime = itemView.tvTimeDateSender
+            imgMessageSenderPicture = itemView.imgMessageSenderImage
+            imgMessageReceiverPicture = itemView.imgMessageReceiverImage
+
         }
     }
 }

@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_request.view.*
+import kotlinx.android.synthetic.main.item_user_request_display.*
 import kotlinx.android.synthetic.main.item_user_request_display.view.*
 
 class RequestFragment : Fragment() {
@@ -49,6 +50,7 @@ class RequestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        view.aviLoadingRequest.show()
         view.rvChatRequest.layoutManager = LinearLayoutManager(context)
         val option = FirebaseRecyclerOptions.Builder<ContactsModel>()
             .setQuery(chatRequestRef?.child(currentuserId)!!, ContactsModel::class.java).build()
@@ -78,6 +80,8 @@ class RequestFragment : Fragment() {
 
                                     @SuppressLint("SetTextI18n")
                                     override fun onDataChange(snapshot: DataSnapshot) {
+                                        if(snapshot.exists()){
+                                            view.aviLoadingRequest.hide()
                                             val name = snapshot.child(CommonUtils.NAME).value.toString()
                                             val status =
                                                 snapshot.child(CommonUtils.STATUS).value.toString()
@@ -101,6 +105,7 @@ class RequestFragment : Fragment() {
                                                 builder.setTitle(name + " Chat Request")
                                                 builder.setItems(itemOption) { dialog, which ->
                                                     if(which == 0){
+                                                        view.aviLoadingRequest.show()
                                                         contactRef?.child(currentuserId)?.child(listUserId)?.child(CommonUtils.CONTACTS)?.setValue("Saved")?.addOnCompleteListener {
                                                             if(it.isSuccessful){
                                                                 contactRef?.child(listUserId)?.child(currentuserId)?.child(CommonUtils.CONTACTS)?.setValue("Saved")?.addOnCompleteListener {
@@ -109,6 +114,7 @@ class RequestFragment : Fragment() {
                                                                             if (it.isSuccessful){
                                                                                 chatRequestRef?.child(listUserId)?.child(currentuserId)?.removeValue()?.addOnCompleteListener {
                                                                                     if (it.isSuccessful){
+                                                                                        view.aviLoadingRequest.hide()
                                                                                         Toast.makeText(context,"Contact Saved",Toast.LENGTH_LONG).show()
                                                                                     }
                                                                                 }
@@ -120,10 +126,12 @@ class RequestFragment : Fragment() {
                                                         }
                                                     }
                                                     if(which == 1){
+                                                        view.aviLoadingRequest.show()
                                                         chatRequestRef?.child(currentuserId)?.child(listUserId)?.removeValue()?.addOnCompleteListener {
                                                             if (it.isSuccessful){
                                                                 chatRequestRef?.child(listUserId)?.child(currentuserId)?.removeValue()?.addOnCompleteListener {
                                                                     if (it.isSuccessful){
+                                                                        view.aviLoadingRequest.hide()
                                                                         Toast.makeText(context,"Request canceled",Toast.LENGTH_LONG).show()
                                                                     }
                                                                 }
@@ -136,6 +144,62 @@ class RequestFragment : Fragment() {
                                                 }
                                                 builder.show()
                                             }
+                                        }
+                                    }
+                                })
+                            }else if (type.equals(CommonUtils.SENT)) {
+                                btnRequestAccept.setText("Request Sent")
+                                btnRequestCancel.visibility = View.GONE
+                                view.aviLoadingRequest.hide()
+
+                                userReference?.child(listUserId!!)?.addValueEventListener(object : ValueEventListener {
+                                    override fun onCancelled(p0: DatabaseError) {
+
+                                    }
+
+                                    @SuppressLint("SetTextI18n")
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        val name = snapshot.child(CommonUtils.NAME).value.toString()
+                                        val status =
+                                            snapshot.child(CommonUtils.STATUS).value.toString()
+                                        var image = ""
+                                        if (snapshot.hasChild(CommonUtils.IMAGE)) {
+                                            image =
+                                                snapshot.child(CommonUtils.IMAGE).value.toString()
+                                            Glide.with(context!!).load(image).placeholder(R.drawable.profile_image).into(holder.profile!!)
+                                        }
+
+                                        holder.userName?.text = name
+                                        holder.userStatus?.setText("You have sent request to $name")
+
+                                        holder.btnCancel?.visibility = View.VISIBLE
+                                        holder.btnAccept?.visibility = View.VISIBLE
+
+                                        holder.itemView.setOnClickListener {
+                                            val itemOption: Array<CharSequence> = arrayOf<CharSequence>("Delete", "Cancel")
+
+                                            val builder = AlertDialog.Builder(context!!)
+                                            builder.setTitle(name + " Aleredy sent request")
+                                            builder.setItems(itemOption) { dialog, which ->
+                                                if(which == 0){
+                                                    view.aviLoadingRequest.show()
+                                                    chatRequestRef?.child(currentuserId)?.child(listUserId)?.removeValue()?.addOnCompleteListener {
+                                                        if (it.isSuccessful){
+                                                            chatRequestRef?.child(listUserId)?.child(currentuserId)?.removeValue()?.addOnCompleteListener {
+                                                                if (it.isSuccessful){
+                                                                    view.aviLoadingRequest.hide()
+                                                                    Toast.makeText(context,"Request Canceled",Toast.LENGTH_LONG).show()
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                if(which == 1){
+                                                    dialog.dismiss()
+                                                }
+                                            }
+                                            builder.show()
+                                        }
                                     }
                                 })
                             }

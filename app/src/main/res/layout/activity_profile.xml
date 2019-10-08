@@ -8,6 +8,16 @@
     tools:context=".ui.profile.ProfileActivity"
     android:background="@drawable/profile_activity">
 
+    <ImageView
+        android:id="@+id/imgBackProfile"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_back_arrow"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgVisitProfile"
         android:layout_width="200dp"

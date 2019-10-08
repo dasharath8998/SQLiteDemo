@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginActivity">
 
+    <com.wang.avi.AVLoadingIndicatorView
+        android:elevation="2dp"
+        android:id="@+id/aviLoadingLogin"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="60dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        app:indicatorName="TriangleSkewSpinIndicator"
+        app:indicatorColor="@color/colorPrimaryDark"
+        android:layout_height="60dp"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,9 +45,10 @@
                 android:layout_below="@id/imgLoginImage"
                 android:hint="Email..."
                 android:inputType="textEmailAddress"
-                android:background="@drawable/edittext"
-                android:padding="4dp"
-                android:drawableStart="@drawable/email"
+                android:background="@drawable/drawable_send_edittext"
+                android:padding="8dp"
+                android:drawableStart="@drawable/drawable_email"
+                android:drawablePadding="10dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginRight="17dp"/>
@@ -49,9 +61,10 @@
                 android:layout_below="@id/etLoginEmail"
                 android:hint="Password..."
                 android:inputType="textPassword"
-                android:background="@drawable/edittext"
-                android:padding="4dp"
-                android:drawableStart="@drawable/password"
+                android:background="@drawable/drawable_send_edittext"
+                android:padding="8dp"
+                android:drawableLeft="@drawable/drawable_password"
+                android:drawablePadding="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginRight="17dp"/>
@@ -121,14 +134,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:drawableStart="@drawable/phone"
+                android:drawableStart="@drawable/drawable_phone"
+                android:drawablePadding="10dp"
                 android:text="Phone"
                 android:textSize="20sp"
                 android:textColor="@android:color/background_light"
                 android:textAllCaps="false"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="19dp"
-                android:layout_marginRight="19dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="55dp"
                 android:background="@drawable/buttons"/>
 
         </RelativeLayout>

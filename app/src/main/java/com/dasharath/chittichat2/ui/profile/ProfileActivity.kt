@@ -35,6 +35,10 @@ class ProfileActivity : AppCompatActivity() {
         currentStat = "new"
         senderUserId = mAuth?.currentUser?.uid.toString()
 
+        imgBackProfile.setOnClickListener {
+            onBackPressed()
+        }
+
         retriveUserInfo()
     }
 
@@ -51,7 +55,7 @@ class ProfileActivity : AppCompatActivity() {
                 tvVisitProfileStatus.text = status
                 if(dataSnapshot.exists() && dataSnapshot.hasChild(CommonUtils.IMAGE)){
                     val imageUrl = dataSnapshot.child(CommonUtils.IMAGE).value.toString()
-                    Glide.with(this@ProfileActivity).load(imageUrl).placeholder(R.drawable.profile_image).into(imgVisitProfile)
+                    Glide.with(this@ProfileActivity).load(imageUrl).placeholder(R.drawable.profile_image).error(R.drawable.profile_image).into(imgVisitProfile)
                 }
                 manageChatRequest()
             }

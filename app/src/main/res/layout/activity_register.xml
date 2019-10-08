@@ -34,11 +34,12 @@
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="17dp"
-                android:background="@drawable/edittext"
-                android:drawableStart="@drawable/email"
+                android:background="@drawable/drawable_send_edittext"
+                android:drawableStart="@drawable/drawable_email"
+                android:drawablePadding="10dp"
                 android:hint="Email..."
                 android:inputType="textEmailAddress"
-                android:padding="4dp" />
+                android:padding="8dp" />
 
             <EditText
                 android:id="@+id/etRegisterPassword"
@@ -49,11 +50,12 @@
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="17dp"
-                android:background="@drawable/edittext"
-                android:drawableStart="@drawable/password"
+                android:background="@drawable/drawable_send_edittext"
+                android:drawableStart="@drawable/drawable_password"
+                android:drawablePadding="10dp"
                 android:hint="Password..."
                 android:inputType="textPassword"
-                android:padding="4dp" />
+                android:padding="8dp" />
 
             <Button
                 android:id="@+id/btnRegisterButton"

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.chats.ChatFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -11,5 +12,15 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"/>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/aviLoading"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="60dp"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        app:indicatorName="BallClipRotatePulseIndicator"
+        app:indicatorColor="@color/colorPrimaryDark"
+        android:layout_height="60dp"/>
 
 </RelativeLayout>

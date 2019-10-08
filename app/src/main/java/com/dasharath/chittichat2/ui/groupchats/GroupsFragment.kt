@@ -3,44 +3,57 @@ package com.dasharath.chittichat2.ui.groupchats
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.dasharath.chittichat2.R
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.fragment_groups.view.*
+import kotlinx.android.synthetic.main.app_bar_layout.*
+import kotlinx.android.synthetic.main.fragment_groups.*
 
-class GroupsFragment : Fragment() {
+class GroupsFragment : AppCompatActivity() {
 
-    private var groupView: View? = null
     private var arrayAdapter: ArrayAdapter<String>? = null
     private var listOfGroup = ArrayList<String>()
     private var groupReference: DatabaseReference? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        groupView = inflater.inflate(R.layout.fragment_groups, container, false)
-        return groupView
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.fragment_groups)
+        aviLoadingGroups?.smoothToShow()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         groupReference = FirebaseDatabase.getInstance().reference.child("Groups")
 
-        init(view)
+        init()
         retriveAndDisplayGroups()
-        view.listGroup.setOnItemClickListener { adapterView, view, position, id ->
+        listeners()
+    }
+
+    private fun listeners() {
+
+        listGroup.setOnItemClickListener { adapterView, view, position, id ->
             val currentGroupName = adapterView.getItemAtPosition(position).toString()
-            startActivity(Intent(context!!,GroupChatActivity::class.java).putExtra(CommonUtils.GROUP_NAME,currentGroupName))
+            startActivity(
+                Intent(this@GroupsFragment, GroupChatActivity::class.java).putExtra(
+                    CommonUtils.GROUP_NAME,
+                    currentGroupName
+                )
+            )
+        }
+
+        imgBack.setOnClickListener {
+            onBackPressed()
         }
     }
 
-    private fun init(view: View) {
-        arrayAdapter = ArrayAdapter(context!!,android.R.layout.simple_list_item_1,listOfGroup)
+    private fun init() {
+        setSupportActionBar(groupListBarLayout as Toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        tvTitle.text = "Groups"
+        arrayAdapter = ArrayAdapter(this@GroupsFragment,android.R.layout.simple_list_item_1,listOfGroup)
 
-        view.listGroup.adapter = arrayAdapter
+        listGroup.adapter = arrayAdapter
     }
 
     private fun retriveAndDisplayGroups() {
@@ -58,6 +71,7 @@ class GroupsFragment : Fragment() {
                 }
                 listOfGroup.clear()
                 listOfGroup.addAll(set)
+                aviLoadingGroups?.smoothToHide()
                 arrayAdapter?.notifyDataSetChanged()
             }
 

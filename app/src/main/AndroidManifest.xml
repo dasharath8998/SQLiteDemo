@@ -13,24 +13,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.chatactivity.ChatActivity" android:parentActivityName=".MainActivity"></activity>
+
+
         <activity android:name=".ui.profile.ProfileActivity" />
-        <activity
-            android:name=".ui.findfriends.FindFriendsActivity"
-            android:parentActivityName=".MainActivity" />
+        <activity android:name=".ui.findfriends.FindFriendsActivity"/>
         <activity android:name=".ui.phonelogin.PhoneLoginActivity" />
+        <activity android:name=".ui.settings.SettingsActivity"/>
+
+        <activity android:name=".ui.groupchats.GroupsFragment"/>
+
+        <activity
+            android:name=".ui.chatactivity.ChatActivity"
+            android:windowSoftInputMode="stateHidden"/>
+
         <activity
             android:name=".ui.groupchats.GroupChatActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:windowSoftInputMode="stateHidden"/>
+
         <activity
             android:name=".ui.register.RegisterActivity"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="stateHidden">
@@ -40,9 +47,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+
     </application>
 
 </manifest>

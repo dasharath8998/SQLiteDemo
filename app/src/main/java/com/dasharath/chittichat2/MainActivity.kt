@@ -1,8 +1,9 @@
 package com.dasharath.chittichat2
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -10,33 +11,45 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.dasharath.chittichat2.ui.findfriends.FindFriendsActivity
-import com.dasharath.chittichat2.ui.settings.SettingsActivity
+import com.dasharath.chittichat2.ui.groupchats.GroupsFragment
 import com.dasharath.chittichat2.ui.login.LoginActivity
+import com.dasharath.chittichat2.ui.settings.SettingsActivity
+import com.dasharath.chittichat2.utils.CommonFunction.gone
+import com.dasharath.chittichat2.utils.CommonFunction.visible
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.dasharath.chittichat2.viewpager.TabsAccessorAdapter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_layout.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentUser: FirebaseUser? = null
     private var mAuth: FirebaseAuth? = null
     private var rootRef: DatabaseReference? = null
+    private var currentUserId: String? = ""
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         mAuth = FirebaseAuth.getInstance()
-        currentUser = mAuth?.currentUser
         rootRef = FirebaseDatabase.getInstance().reference
 
         setSupportActionBar(mainPageToolbar as Toolbar)
-        supportActionBar?.title = "Chitti Chat"
+        tvTitle.text = "Chitti Chat"
+
+        imgBack.gone()
+        imgFindFriend.visible()
+        imgFindFriend.setOnClickListener {
+            startActivity(Intent(this@MainActivity, FindFriendsActivity::class.java))
+        }
 
         viewPagerMainTab.adapter =
             TabsAccessorAdapter(supportFragmentManager)
@@ -45,10 +58,29 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
+        val currentUser = mAuth?.currentUser
         if (currentUser == null) {
             sendUserToLogInActivity()
         } else {
+            updateUserStatus("online")
             verifyUserExistance()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val currentUser = mAuth?.currentUser
+        if (currentUser != null) {
+            updateUserStatus("offline")
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val currentUser = mAuth?.currentUser
+        if (currentUser != null) {
+            updateUserStatus("offline")
         }
     }
 
@@ -63,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.child("name").exists()) {
-                        Toast.makeText(this@MainActivity, "Welcome", Toast.LENGTH_LONG).show()
+
                     } else {
                         startActivity(
                             Intent(
@@ -91,18 +123,23 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         super.onOptionsItemSelected(item)
         when (item?.itemId) {
-            R.id.menuFindFriends -> {
-                startActivity(Intent(this@MainActivity, FindFriendsActivity::class.java))
-            }
+
             R.id.menuSettings -> {
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
             }
+
             R.id.menuLogOut -> {
+                updateUserStatus("offline")
                 mAuth?.signOut()
                 sendUserToLogInActivity()
             }
-            R.id.menuCreateGroup -> {
-                //requestNewGroup()
+
+            R.id.menuFindGroup -> {
+                startActivity(Intent(this@MainActivity, GroupsFragment::class.java))
+            }
+
+            R.id.menuTermAndConditions -> {
+
             }
         }
         return true
@@ -144,9 +181,40 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private fun updateUserStatus(state: String){
+        val cal = Calendar.getInstance()
+        val currentDate = SimpleDateFormat("MMM dd, yyyy")
+        val saveCurrentDate = currentDate.format(cal.time)
+
+        val currentTimeFormat = SimpleDateFormat("hh:mm a")
+        val currentTime = currentTimeFormat.format(cal.time)
+
+        val onLineState = HashMap<String, Any>()
+        onLineState.put(CommonUtils.TIME,saveCurrentDate)
+        onLineState.put(CommonUtils.DATE,currentTime)
+        onLineState.put(CommonUtils.STATE,state)
+
+        currentUserId = mAuth?.currentUser?.uid!!
+        rootRef?.child(CommonUtils.USERS_DB_REF)?.child(currentUserId!!)?.child(CommonUtils.USER_STATE)?.updateChildren(onLineState)
+
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.option_menu, menu)
         return true
+    }
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 }

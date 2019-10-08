@@ -16,12 +16,9 @@ class TabsAccessorAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapt
                  return ChatFragment()
             }
             1 ->{
-                return GroupsFragment()
-            }
-            2 ->{
                 return ContactsFragment()
             }
-            3 ->{
+            2 ->{
                 return RequestFragment()
             }
             else -> {
@@ -30,7 +27,7 @@ class TabsAccessorAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapt
         }
     }
 
-    override fun getCount(): Int = 4
+    override fun getCount(): Int = 3
 
     override fun getPageTitle(position: Int): CharSequence? {
         when(position){
@@ -38,12 +35,9 @@ class TabsAccessorAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapt
                 return "Chats"
             }
             1 ->{
-                return "Groups"
-            }
-            2 ->{
                 return "Contacts"
             }
-            3 ->{
+            2 ->{
                 return "Request"
             }
             else -> {

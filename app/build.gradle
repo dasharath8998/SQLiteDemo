@@ -11,6 +11,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 28
         dataBinding.enabled true
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -47,4 +48,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation 'com.github.nitrico.lastadapter:lastadapter:2.3.0'
     kapt 'com.android.databinding:compiler:3.5.0'
+    //cuustom progress bar
+    implementation 'com.wang.avi:library:2.1.3'
 }

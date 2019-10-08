@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "790699160924-4af8vam40aiq8vn39niuivocr125t5nl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dasharath.chittichat2",
+            "certificate_hash": "839cbc4e7d6ec7702c2ef57487cb42b2edc657e5"
+          }
+        },
+        {
           "client_id": "790699160924-ksgl3vhvbulnr4c7v61fc4rqnt5a01r4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

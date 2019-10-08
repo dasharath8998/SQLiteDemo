@@ -8,10 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.dasharath.chittichat2.MainActivity
 import com.dasharath.chittichat2.R
+import com.dasharath.chittichat2.utils.CommonFunction
 import com.dasharath.chittichat2.utils.CommonUtils
+import com.dasharath.chittichat2.utils.CommonFunction.visible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_group_chat.*
+import kotlinx.android.synthetic.main.app_bar_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -36,8 +39,6 @@ class GroupChatActivity : AppCompatActivity() {
         init()
         getUserInfo()
         listeners()
-
-        Toast.makeText(this@GroupChatActivity,currentGroupName,Toast.LENGTH_LONG).show()
     }
 
     override fun onStart() {
@@ -72,11 +73,11 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        imgBack.visible()
         currentGroupName = intent.getStringExtra(CommonUtils.GROUP_NAME)
         setSupportActionBar(groupChatBarLayout as Toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = currentGroupName
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        tvTitle.text = currentGroupName
 
         mAuth = FirebaseAuth.getInstance()
         currentUserId = mAuth?.currentUser?.uid!!
@@ -90,6 +91,11 @@ class GroupChatActivity : AppCompatActivity() {
             saveMessageInfoToDatabase()
             scrollViewGroupChat.fullScroll((ScrollView.FOCUS_DOWN))
             etInputGroupMessage.setText("")
+        }
+
+        imgBack.setOnClickListener {
+            CommonFunction.hideKeyboard(this@GroupChatActivity)
+            onBackPressed()
         }
     }
 
@@ -108,12 +114,12 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     private fun displayMessages(dataSnapshot: DataSnapshot) {
-        var iterator = dataSnapshot.children.iterator()
+        val iterator = dataSnapshot.children.iterator()
         while (iterator.hasNext()){
-            var chatDate = iterator.next().value.toString()
-            var chatMessage = iterator.next().value.toString()
-            var chatName = iterator.next().value.toString()
-            var chatTime = iterator.next().value.toString()
+            val chatDate = iterator.next().value.toString()
+            val chatMessage = iterator.next().value.toString()
+            val chatName = iterator.next().value.toString()
+            val chatTime = iterator.next().value.toString()
 
             tvGroupChatTextDisplay.append(chatName+":\n"+chatMessage+"\n"+chatTime+"     "+chatDate+"\n\n\n")
 

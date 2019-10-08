@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,8 +50,11 @@ class ContactsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.rvContactList.layoutManager = LinearLayoutManager(context)
 
+        view.aviLoadingContacts.show()
+
         val option = FirebaseRecyclerOptions.Builder<ContactsModel>().setQuery(contactRef!!,ContactsModel::class.java).build()
-        val adapter =object : FirebaseRecyclerAdapter<ContactsModel,ContactViewHolder>(option){
+        val adapter = object : FirebaseRecyclerAdapter<ContactsModel,ContactViewHolder>(option){
+
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
                 val view = LayoutInflater.from(context).inflate(R.layout.item_user_request_display,parent,false)
                 return ContactViewHolder(view)
@@ -64,15 +68,38 @@ class ContactsFragment : Fragment() {
                     }
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val name = dataSnapshot.child(CommonUtils.NAME).value.toString()
-                        val status = dataSnapshot.child(CommonUtils.STATUS).value.toString()
-                        var image = ""
-                        if(dataSnapshot.hasChild(CommonUtils.IMAGE)){
-                            image = dataSnapshot.child(CommonUtils.IMAGE).value.toString()
+
+                        if(dataSnapshot.exists()){
+
+                            if(dataSnapshot.child(CommonUtils.USER_STATE).hasChild(CommonUtils.STATE)){
+                                val state = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.STATE).value.toString()
+                                val time = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.TIME).value.toString()
+                                val date = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.DATE).value.toString()
+
+                                if(state == "online"){
+                                    holder.imgOnlineStatus?.visibility = View.VISIBLE
+                                } else if (state == "offline") {
+                                    holder.imgOnlineStatus?.visibility = View.GONE
+                                }
+
+                            } else {
+                                holder.imgOnlineStatus?.visibility = View.GONE
+                            }
+
+                            val name = dataSnapshot.child(CommonUtils.NAME).value.toString()
+                            val status = dataSnapshot.child(CommonUtils.STATUS).value.toString()
+                            var image = ""
+
+                            if(dataSnapshot.hasChild(CommonUtils.IMAGE)){
+                                image = dataSnapshot.child(CommonUtils.IMAGE).value.toString()
+                            }
+
+                            holder.userName?.text = name
+                            holder.userStatus?.text = status
+                            Glide.with(context!!).load(image).placeholder(R.drawable.profile_image).into(holder.profile!!)
+                            view.aviLoadingContacts.hide()
                         }
-                        holder.userName?.text = name
-                        holder.userStatus?.text = status
-                        Glide.with(context!!).load(image).placeholder(R.drawable.profile_image).into(holder.profile!!)
+
                     }
 
                 })
@@ -86,10 +113,12 @@ class ContactsFragment : Fragment() {
         var userName: TextView? = null
         var userStatus: TextView? = null
         var profile: CircleImageView? = null
+        var imgOnlineStatus: ImageView? = null
         init {
             userName = itemView.tvRequestProfileName
             userStatus = itemView.tvItemRequestStatus
             profile = itemView.imgItemUserRequestProfile
+            imgOnlineStatus = itemView.imgOnlineStatus!!
         }
     }
 }

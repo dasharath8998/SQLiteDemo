@@ -4,21 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgItemMessageProfile"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@drawable/profile_image"
-        android:layout_marginTop="10dp" />
-
     <TextView
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="15dp"
         android:id="@+id/tvReceiverMessageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
-        android:layout_toEndOf="@+id/imgItemMessageProfile"
         android:background="@drawable/receiver_messages_layout"
         android:text="Recever Side"
         android:padding="10dp"
@@ -26,19 +18,61 @@
         android:textStyle="bold"
         android:textColor="@android:color/black"/>
 
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="15dp"
+        android:id="@+id/tvTimeDateReceiver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvReceiverMessageText"
+        android:text="Recever Time datte"
+        android:padding="2dp"
+        android:textSize="7sp"
+        android:textColor="#515658"/>
+
     <TextView
         android:id="@+id/tvSenderMessageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="@+id/tvReceiverMessageText"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/sender_messages_layout"
         android:text="Sender Side"
         android:padding="10dp"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="15dp"
         android:textColor="@android:color/black"/>
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:id="@+id/tvTimeDateSender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="Sender Date time"
+        android:textSize="7sp"
+        android:layout_below="@id/tvSenderMessageText"
+        android:layout_marginEnd="15dp"
+        android:textColor="#515658"/>
+
+    <ImageView
+        android:id="@+id/imgMessageSenderImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="15dp"
+        android:layout_alignParentEnd="true"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/imgMessageReceiverImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="15dp"
+        android:layout_alignParentStart="true"
+        android:scaleType="centerCrop"/>
+
 
 </RelativeLayout>
