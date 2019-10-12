@@ -3,7 +3,9 @@ package com.dasharath.chittichat2.ui.p2pchat
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,12 +40,12 @@ class ChatFragment : Fragment() {
         currentUserId = mAuth?.currentUser?.uid!!
         chatRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.CONTACTS).child(currentUserId)
         userRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.USERS_DB_REF)
+        view.aviLoading.smoothToShow()
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.aviLoading.smoothToShow()
         setAdapter(view)
     }
 
@@ -63,6 +65,7 @@ class ChatFragment : Fragment() {
                 val userId = getRef(position).key
                 userRef?.child(userId!!)?.addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
+
                     }
 
                     @SuppressLint("SetTextI18n")
@@ -70,27 +73,40 @@ class ChatFragment : Fragment() {
                         if (dataSnapshot.exists()) {
 
                             val name = dataSnapshot.child(CommonUtils.NAME).value.toString()
-                            val status = dataSnapshot.child(CommonUtils.STATUS).value.toString()
+//                            val status = dataSnapshot.child(CommonUtils.STATUS).value.toString()
                             var image = ""
 
                             if (dataSnapshot.hasChild(CommonUtils.IMAGE)) {
                                 image = dataSnapshot.child(CommonUtils.IMAGE).value.toString()
                             }
 
-                            if(dataSnapshot.child(CommonUtils.USER_STATE).hasChild(CommonUtils.STATE)){
-                                val state = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.STATE).value.toString()
-                                val time = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.TIME).value.toString()
-                                val date = dataSnapshot.child(CommonUtils.USER_STATE).child(CommonUtils.DATE).value.toString()
+                            val rootRef = FirebaseDatabase.getInstance().reference
 
-                                if(state == "online"){
-                                    holder.userStatus?.text = "Online"
-                                } else if (state == "offline") {
-                                    holder.userStatus?.text = "$time $date"
-                                }
+                            rootRef.child(CommonUtils.MESSAGES).child(currentUserId).child(userId).addValueEventListener(
+                                object : ValueEventListener {
 
-                            } else {
-                                holder.userStatus?.text = "Offline"
-                            }
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        if(snapshot.exists()){
+                                            val iterator = snapshot.children.last()
+                                            val type = iterator.child("type").value.toString()
+
+                                            if(type == CommonUtils.IMAGE){
+                                                holder.userStatus?.text = "Image"
+                                                holder.userStatus?.setTextColor(Color.parseColor("#E4394F"))
+                                            } else {
+                                                holder.userStatus?.text = iterator.child(CommonUtils.MESSAGE).value.toString()
+                                                holder.userStatus?.setTextColor(Color.parseColor("#3C3F41"))
+                                            }
+                                            Log.d("Snapshott",iterator.toString())
+                                            Log.d("Snapshott",type.toString())
+                                        }
+                                    }
+
+                                    override fun onCancelled(p0: DatabaseError) {
+
+                                    }
+
+                                })
 
                             holder.userName?.text = name
 

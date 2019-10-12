@@ -83,20 +83,21 @@ class RequestFragment : Fragment() {
                                         if(snapshot.exists()){
                                             view.aviLoadingRequest.hide()
                                             val name = snapshot.child(CommonUtils.NAME).value.toString()
-                                            val status =
-                                                snapshot.child(CommonUtils.STATUS).value.toString()
+//                                            val status =
+//                                                snapshot.child(CommonUtils.STATUS).value.toString()
                                             var image = ""
                                             if (snapshot.hasChild(CommonUtils.IMAGE)) {
                                                 image =
                                                     snapshot.child(CommonUtils.IMAGE).value.toString()
-                                                Glide.with(context!!).load(image).placeholder(R.drawable.profile_image).into(holder.profile!!)
                                             }
-
-                                            holder.userName?.text = name
-                                            holder.userStatus?.setText("Wants to connect with you")
-
-                                            holder.btnCancel?.visibility = View.VISIBLE
-                                            holder.btnAccept?.visibility = View.VISIBLE
+                                            if(context != null) {
+                                                Glide.with(context!!).load(image)
+                                                    .placeholder(R.drawable.profile_image)
+                                                    .error(R.drawable.profile_image)
+                                                    .into(holder.profile!!)
+                                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       holder.userName?.text = name
+                                            holder.userStatus?.setText("You have request Accepte or Cancel")
 
                                             holder.itemView.setOnClickListener {
                                                 val itemOption: Array<CharSequence> = arrayOf<CharSequence>("Accept", "Delete", "Cancel")
@@ -148,8 +149,6 @@ class RequestFragment : Fragment() {
                                     }
                                 })
                             }else if (type.equals(CommonUtils.SENT)) {
-                                btnRequestAccept.setText("Request Sent")
-                                btnRequestCancel.visibility = View.GONE
                                 view.aviLoadingRequest.hide()
 
                                 userReference?.child(listUserId!!)?.addValueEventListener(object : ValueEventListener {
@@ -160,20 +159,21 @@ class RequestFragment : Fragment() {
                                     @SuppressLint("SetTextI18n")
                                     override fun onDataChange(snapshot: DataSnapshot) {
                                         val name = snapshot.child(CommonUtils.NAME).value.toString()
-                                        val status =
-                                            snapshot.child(CommonUtils.STATUS).value.toString()
                                         var image = ""
                                         if (snapshot.hasChild(CommonUtils.IMAGE)) {
                                             image =
                                                 snapshot.child(CommonUtils.IMAGE).value.toString()
-                                            Glide.with(context!!).load(image).placeholder(R.drawable.profile_image).into(holder.profile!!)
+                                        }
+
+                                        if(context != null) {
+                                            Glide.with(context!!).load(image)
+                                                .placeholder(R.drawable.profile_image)
+                                                .error(R.drawable.profile_image)
+                                                .into(holder.profile!!)
                                         }
 
                                         holder.userName?.text = name
                                         holder.userStatus?.setText("You have sent request to $name")
-
-                                        holder.btnCancel?.visibility = View.VISIBLE
-                                        holder.btnAccept?.visibility = View.VISIBLE
 
                                         holder.itemView.setOnClickListener {
                                             val itemOption: Array<CharSequence> = arrayOf<CharSequence>("Delete", "Cancel")
@@ -222,15 +222,11 @@ class RequestFragment : Fragment() {
         var userName: TextView? = null
         var userStatus: TextView? = null
         var profile: CircleImageView? = null
-        var btnAccept: TextView? = null
-        var btnCancel: TextView? = null
 
         init {
             userName = itemView.tvRequestProfileName
             userStatus = itemView.tvItemRequestStatus
             profile = itemView.imgItemUserRequestProfile
-            btnAccept = itemView.btnRequestAccept
-            btnCancel = itemView.btnRequestCancel
         }
     }
 

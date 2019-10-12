@@ -1,6 +1,7 @@
 package com.dasharath.chittichat2.ui.contacts
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.R
 import com.dasharath.chittichat2.models.ContactsModel
+import com.dasharath.chittichat2.ui.profile.ProfileActivity
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -121,6 +123,9 @@ class ContactsFragment : Fragment() {
                                 }
 
                             })
+                        holder.itemView.setOnClickListener {
+                            startActivity(Intent(context!!, ProfileActivity::class.java).putExtra(CommonUtils.UID,getRef(position).key))
+                        }
                     }
                 }
             view.rvContactList.adapter = adapter
