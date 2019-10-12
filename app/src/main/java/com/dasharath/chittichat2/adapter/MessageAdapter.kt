@@ -11,14 +11,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.R
-import com.dasharath.chittichat2.ui.findfriends.Messages
+import com.dasharath.chittichat2.models.Messages
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_messages_layout.view.*
 
-class MessageAdapter(var userMessageList:List<Messages>,var context:Context): RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+class MessageAdapter(var userMessageList:List<Messages>, var context:Context): RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     private var mAuth: FirebaseAuth? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {

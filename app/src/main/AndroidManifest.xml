@@ -18,12 +18,10 @@
         <activity android:name=".ui.profile.ProfileActivity" />
         <activity android:name=".ui.findfriends.FindFriendsActivity"/>
         <activity android:name=".ui.phonelogin.PhoneLoginActivity" />
-        <activity android:name=".ui.settings.SettingsActivity"/>
 
         <activity android:name=".ui.groupchats.GroupsFragment"/>
 
-        <activity
-            android:name=".ui.chatactivity.ChatActivity"
+        <activity android:name=".ui.settings.SettingsActivity"
             android:windowSoftInputMode="stateHidden"/>
 
         <activity
@@ -51,6 +49,8 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".ui.p2pchat.ChatActivity"
+            android:windowSoftInputMode="stateHidden"/>
 
     </application>
 

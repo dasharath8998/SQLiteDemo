@@ -191,8 +191,8 @@ class MainActivity : AppCompatActivity() {
         val currentTime = currentTimeFormat.format(cal.time)
 
         val onLineState = HashMap<String, Any>()
-        onLineState.put(CommonUtils.TIME,saveCurrentDate)
-        onLineState.put(CommonUtils.DATE,currentTime)
+        onLineState.put(CommonUtils.TIME,currentTime)
+        onLineState.put(CommonUtils.DATE,saveCurrentDate)
         onLineState.put(CommonUtils.STATE,state)
 
         currentUserId = mAuth?.currentUser?.uid!!

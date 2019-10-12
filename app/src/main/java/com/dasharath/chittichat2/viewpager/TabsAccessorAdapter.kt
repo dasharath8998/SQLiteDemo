@@ -3,10 +3,9 @@ package com.dasharath.chittichat2.viewpager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.dasharath.chittichat2.RequestFragment
-import com.dasharath.chittichat2.ui.chats.ChatFragment
+import com.dasharath.chittichat2.ui.request.RequestFragment
+import com.dasharath.chittichat2.ui.p2pchat.ChatFragment
 import com.dasharath.chittichat2.ui.contacts.ContactsFragment
-import com.dasharath.chittichat2.ui.groupchats.GroupsFragment
 
 class TabsAccessorAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 

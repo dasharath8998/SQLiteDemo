@@ -1,4 +1,4 @@
-package com.dasharath.chittichat2
+package com.dasharath.chittichat2.ui.request
 
 
 import android.annotation.SuppressLint
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dasharath.chittichat2.ui.findfriends.ContactsModel
+import com.dasharath.chittichat2.R
+import com.dasharath.chittichat2.models.ContactsModel
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -222,8 +222,8 @@ class RequestFragment : Fragment() {
         var userName: TextView? = null
         var userStatus: TextView? = null
         var profile: CircleImageView? = null
-        var btnAccept: Button? = null
-        var btnCancel: Button? = null
+        var btnAccept: TextView? = null
+        var btnCancel: TextView? = null
 
         init {
             userName = itemView.tvRequestProfileName

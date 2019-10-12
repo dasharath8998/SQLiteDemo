@@ -1,4 +1,4 @@
-package com.dasharath.chittichat2.ui.findfriends
+package com.dasharath.chittichat2.models
 
 data class ContactsModel(
     var name: String,

@@ -1,4 +1,4 @@
-package com.dasharath.chittichat2.ui.chats
+package com.dasharath.chittichat2.ui.p2pchat
 
 
 import android.annotation.SuppressLint
@@ -13,15 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.R
-import com.dasharath.chittichat2.ui.chatactivity.ChatActivity
-import com.dasharath.chittichat2.ui.findfriends.ContactsModel
+import com.dasharath.chittichat2.models.ContactsModel
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_chats.*
 import kotlinx.android.synthetic.main.fragment_chats.view.*
 import kotlinx.android.synthetic.main.fragment_chats.view.aviLoading
 import kotlinx.android.synthetic.main.item_user_request_display.view.*
@@ -87,7 +85,7 @@ class ChatFragment : Fragment() {
                                 if(state == "online"){
                                     holder.userStatus?.text = "Online"
                                 } else if (state == "offline") {
-                                    holder.userStatus?.text = "Last seen: $date $time"
+                                    holder.userStatus?.text = "$time $date"
                                 }
 
                             } else {
@@ -104,7 +102,8 @@ class ChatFragment : Fragment() {
                             }
 
                             holder.itemView.setOnClickListener {
-                                startActivity(Intent(context,ChatActivity::class.java)
+                                startActivity(Intent(context,
+                                    ChatActivity::class.java)
                                     .putExtra(CommonUtils.UID,userId)
                                     .putExtra(CommonUtils.NAME,name)
                                     .putExtra(CommonUtils.IMAGE,image))

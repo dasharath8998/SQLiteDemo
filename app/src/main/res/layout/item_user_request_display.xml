@@ -17,15 +17,16 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgItemUserRequestProfile"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                tools:src="@drawable/profile_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_margin="10dp" />
 
 
             <LinearLayout
-                android:layout_marginStart="10dp"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
@@ -36,56 +37,68 @@
 
                     <TextView
                         android:id="@+id/tvRequestProfileName"
+                        tools:text="Dashrath sindhav"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="textStart"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/imgOnlineStatus"
                         android:layout_marginStart="40dp"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:visibility="gone"
-                        android:src="@drawable/online" />
+                        app:srcCompat="@drawable/online" />
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvItemRequestStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
-                    android:textSize="12sp"
-                    tools:text="sadd.fdkfjkja" />
-
                 <LinearLayout
+                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
-                    <Button
-                        android:id="@+id/btnRequestAccept"
+                    <TextView
+                        android:id="@+id/tvItemRequestStatus"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:background="@android:color/holo_green_light"
-                        android:text="Accept"
-                        android:textAllCaps="false"
-                        android:textSize="16sp"
-                        android:visibility="gone" />
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textStart"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_marginEnd="20dp"
+                        android:textSize="14sp"
+                        tools:text="My status" />
 
-                    <Button
-                        android:id="@+id/btnRequestCancel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@android:color/holo_red_dark"
-                        android:text="Cancel"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/background_light"
-                        android:textSize="16sp"
-                        android:visibility="gone" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="40dp"
+                        android:gravity="end">
+
+                        <TextView
+                            android:id="@+id/btnRequestAccept"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:textSize="16sp"
+                            tools:text="Accept"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/btnRequestCancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:textSize="16sp"
+                            android:text="Cancel"
+                            android:textAllCaps="false"
+                           android:visibility="gone" />
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 

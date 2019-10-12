@@ -34,13 +34,24 @@ class SettingsActivity : AppCompatActivity() {
     private val GALLARY_PICK = 123
     private var userPfofileImagesRef: StorageReference? = null
     private var loadingBar: ProgressDialog? = null
+    private var networkFlag = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
         init()
-        retriveUserInformation()
         listeners()
+        retriveUserInformation()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        networkFlag = true
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        networkFlag = false
     }
 
     private fun init() {
@@ -53,53 +64,6 @@ class SettingsActivity : AppCompatActivity() {
         userPfofileImagesRef =
             FirebaseStorage.getInstance().getReference().child(CommonUtils.PROFILE_IMAGES)
         loadingBar = ProgressDialog(this)
-    }
-
-    private fun retriveUserInformation() {
-        rootRef?.child(CommonUtils.USERS_DB_REF)?.child(cuurentUserId)
-            ?.addValueEventListener(object : ValueEventListener {
-
-                override fun onCancelled(p0: DatabaseError) {
-
-                }
-
-                override fun onDataChange(snapshot: DataSnapshot) {
-
-                    val hasName = snapshot.hasChild(CommonUtils.NAME)
-                    val hasImage = snapshot.hasChild(CommonUtils.IMAGE)
-                    val exist = snapshot.exists()
-
-                    if(exist && hasImage){
-                        val image = snapshot.child(CommonUtils.IMAGE).value.toString()
-                        Glide.with(this@SettingsActivity).load(image).placeholder(R.drawable.profile_image).error(R.drawable.profile_image).into(imgSettingProfile)
-                    }
-
-                    if (exist && hasName && hasImage) {
-
-                        val username = snapshot.child(CommonUtils.NAME).value.toString()
-                        val status = snapshot.child(CommonUtils.STATUS).value.toString()
-                        val image = snapshot.child(CommonUtils.IMAGE).value.toString()
-
-                        etSettingsUsername.setText(username)
-                        etSettingsStatus.setText(status)
-
-                        Glide.with(this@SettingsActivity).load(image).into(imgSettingProfile)
-
-                    }else if (exist && hasName) {
-
-                        val username = snapshot.child(CommonUtils.NAME).value.toString()
-                        val status = snapshot.child(CommonUtils.STATUS).value.toString()
-                        val image = snapshot.child(CommonUtils.IMAGE).value.toString()
-
-                        etSettingsUsername.setText(username)
-                        etSettingsStatus.setText(status)
-
-                    } else {
-                        Toast.makeText(this@SettingsActivity, "Please set & update your profile information", Toast.LENGTH_LONG).show()
-                    }
-                }
-
-            })
     }
 
     private fun listeners() {
@@ -118,6 +82,59 @@ class SettingsActivity : AppCompatActivity() {
             CommonFunction.hideKeyboard(this@SettingsActivity)
             onBackPressed()
         }
+    }
+
+    private fun retriveUserInformation() {
+        rootRef?.child(CommonUtils.USERS_DB_REF)?.child(cuurentUserId)
+            ?.addValueEventListener(object : ValueEventListener {
+
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val hasName = snapshot.hasChild(CommonUtils.NAME)
+                    val hasImage = snapshot.hasChild(CommonUtils.IMAGE)
+                    val exist = snapshot.exists()
+
+                    if(exist && hasImage){
+                        val image = snapshot.child(CommonUtils.IMAGE).value.toString()
+                        if(networkFlag) {
+                            Glide.with(this@SettingsActivity).load(image)
+                                .placeholder(R.drawable.profile_image)
+                                .error(R.drawable.profile_image).into(imgSettingProfile)
+                        }
+                    }
+
+                    if (exist && hasName && hasImage) {
+
+                        val username = snapshot.child(CommonUtils.NAME).value.toString()
+                        val status = snapshot.child(CommonUtils.STATUS).value.toString()
+                        val image = snapshot.child(CommonUtils.IMAGE).value.toString()
+
+                        etSettingsUsername.setText(username)
+                        etSettingsStatus.setText(status)
+
+                        if(networkFlag) {
+                            Glide.with(this@SettingsActivity).load(image).into(imgSettingProfile)
+                        }
+
+                    }else if (exist && hasName) {
+
+                        val username = snapshot.child(CommonUtils.NAME).value.toString()
+                        val status = snapshot.child(CommonUtils.STATUS).value.toString()
+                        val image = snapshot.child(CommonUtils.IMAGE).value.toString()
+
+                        etSettingsUsername.setText(username)
+                        etSettingsStatus.setText(status)
+
+                    } else {
+                        Toast.makeText(this@SettingsActivity, "Please set & update your profile information", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            })
     }
 
     private fun updateSettings() {

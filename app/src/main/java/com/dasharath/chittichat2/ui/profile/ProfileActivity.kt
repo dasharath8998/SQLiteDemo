@@ -21,10 +21,18 @@ class ProfileActivity : AppCompatActivity() {
     private var receverUserId: String = ""
     private var currentStat: String = ""
     private var senderUserId: String = ""
+    private var networkFlag: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+        init()
+        listeners()
+        retriveUserInfo()
+    }
+
+    private fun init() {
         userRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.USERS_DB_REF)
         chatReqRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.CHAT_REQUEST)
         contactRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.CONTACTS)
@@ -34,12 +42,12 @@ class ProfileActivity : AppCompatActivity() {
         receverUserId = intent.getStringExtra(CommonUtils.UID)
         currentStat = "new"
         senderUserId = mAuth?.currentUser?.uid.toString()
+    }
 
+    private fun listeners() {
         imgBackProfile.setOnClickListener {
             onBackPressed()
         }
-
-        retriveUserInfo()
     }
 
     private fun retriveUserInfo() {
@@ -55,7 +63,11 @@ class ProfileActivity : AppCompatActivity() {
                 tvVisitProfileStatus.text = status
                 if(dataSnapshot.exists() && dataSnapshot.hasChild(CommonUtils.IMAGE)){
                     val imageUrl = dataSnapshot.child(CommonUtils.IMAGE).value.toString()
-                    Glide.with(this@ProfileActivity).load(imageUrl).placeholder(R.drawable.profile_image).error(R.drawable.profile_image).into(imgVisitProfile)
+                    if(networkFlag) {
+                        Glide.with(this@ProfileActivity).load(imageUrl)
+                            .placeholder(R.drawable.profile_image).error(R.drawable.profile_image)
+                            .into(imgVisitProfile)
+                    }
                 }
                 manageChatRequest()
             }
@@ -210,5 +222,15 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        networkFlag = true
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        networkFlag = false
     }
 }
