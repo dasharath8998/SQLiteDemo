@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.R
 import com.dasharath.chittichat2.adapter.MessageAdapter
 import com.dasharath.chittichat2.models.Messages
+import com.dasharath.chittichat2.ui.profile.ProfileActivity
 import com.dasharath.chittichat2.utils.CommonFunction
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.google.firebase.auth.FirebaseAuth
@@ -22,6 +24,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.item_chat_bar.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -72,6 +75,12 @@ class ChatActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        relativeChatBar?.setOnClickListener {
+            startActivity(Intent(this@ChatActivity, ProfileActivity::class.java).putExtra(CommonUtils.UID,messageReceiverId))
+        }
+
+        clearNewMessage()
+
         displayLastSeen()
     }
 
@@ -107,6 +116,31 @@ class ChatActivity : AppCompatActivity() {
         currentTime = currentTimeFormat.format(cal.time)
 
         setAdapter()
+    }
+
+    private fun clearNewMessage() {
+            val mesRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.MESSAGES)
+                .child(messageSenderId).child(messageReceiverId)
+            mesRef.addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(snp: DataSnapshot) {
+                        if (snp.exists()) {
+//                            val uid = snp.children.last().child("from").value.toString()
+                            val lastMessageBody = snp.children.last().key
+                            Log.d("snp", lastMessageBody.toString())
+//                            if(uid != mAuth?.currentUser?.uid!!.toString()) {
+                                mesRef.child(lastMessageBody!!).child(CommonUtils.STATUS)
+                                    .setValue(CommonUtils.RECEIVED)
+//                            }
+                        }
+                    }
+
+                }
+            )
     }
 
     private fun displayLastSeen(){
@@ -188,9 +222,19 @@ class ChatActivity : AppCompatActivity() {
             messageTextBody[CommonUtils.TIME] = currentTime
             messageTextBody[CommonUtils.DATE] = saveCurrentDate
 
+            val messageReceiverTextBody:HashMap<String,Any> = HashMap()
+            messageReceiverTextBody[CommonUtils.MESSAGE] = messageTexr
+            messageReceiverTextBody["type"] = "text"
+            messageReceiverTextBody["from"] = messageSenderId
+            messageReceiverTextBody["to"] = messageReceiverId
+            messageReceiverTextBody[CommonUtils.STATUS] = CommonUtils.SENT
+            messageReceiverTextBody[CommonUtils.MESSAGE_ID] = messagePushId
+            messageReceiverTextBody[CommonUtils.TIME] = currentTime
+            messageReceiverTextBody[CommonUtils.DATE] = saveCurrentDate
+
             val messageBodyDetail:HashMap<String,Any> = HashMap()
             messageBodyDetail["$messageSenderRef/$messagePushId"] = messageTextBody
-            messageBodyDetail["$messageReceiverRef/$messagePushId"] = messageTextBody
+            messageBodyDetail["$messageReceiverRef/$messagePushId"] = messageReceiverTextBody
 
             rootRef?.updateChildren(messageBodyDetail)?.addOnCompleteListener {
                 if(it.isSuccessful){
@@ -252,9 +296,20 @@ class ChatActivity : AppCompatActivity() {
                         messageImageBody[CommonUtils.TIME] = currentTime
                         messageImageBody[CommonUtils.DATE] = saveCurrentDate
 
+                        val messageReceiverImageBody:HashMap<String,Any> = HashMap()
+                        messageReceiverImageBody[CommonUtils.MESSAGE] = myUrl
+                        messageReceiverImageBody[CommonUtils.NAME] = uri.lastPathSegment!!
+                        messageReceiverImageBody["type"] = checker
+                        messageReceiverImageBody["from"] = messageSenderId
+                        messageReceiverImageBody["to"] = messageReceiverId
+                        messageReceiverImageBody[CommonUtils.STATUS] = CommonUtils.SENT
+                        messageReceiverImageBody[CommonUtils.MESSAGE_ID] = messagePushId
+                        messageReceiverImageBody[CommonUtils.TIME] = currentTime
+                        messageReceiverImageBody[CommonUtils.DATE] = saveCurrentDate
+
                         val messageBodyDetail:HashMap<String,Any> = HashMap()
                         messageBodyDetail["$messageSenderRef/$messagePushId"] = messageImageBody
-                        messageBodyDetail["$messageReceiverRef/$messagePushId"] = messageImageBody
+                        messageBodyDetail["$messageReceiverRef/$messagePushId"] = messageReceiverImageBody
 
                         rootRef?.updateChildren(messageBodyDetail)?.addOnCompleteListener {
                             if(it.isSuccessful){
@@ -276,5 +331,10 @@ class ChatActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        clearNewMessage()
     }
 }

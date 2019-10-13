@@ -78,6 +78,10 @@ class FindFriendsActivity : AppCompatActivity() {
                     if(aviLoadingFF.isVisible) {
                         aviLoadingFF.hide()
                     }
+
+                    holder.profile?.setOnClickListener {
+                        CommonFunction.showImage(model.image,this@FindFriendsActivity,true)
+                    }
                 }
             }
         rvFindFriends.adapter = adapter

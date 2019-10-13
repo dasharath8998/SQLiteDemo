@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.R
 import com.dasharath.chittichat2.models.Messages
+import com.dasharath.chittichat2.utils.CommonFunction
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.item_messages_layout.view.*
@@ -64,9 +65,17 @@ class MessageAdapter(var userMessageList:List<Messages>, var context:Context): R
             if (fromUserId == messageSenderId){
                 holder.imgMessageSenderPicture?.visibility = View.VISIBLE
                 Glide.with(context).load(messages.message).into(holder.imgMessageSenderPicture!!)
+
+                holder.imgMessageSenderPicture?.setOnClickListener {
+                    CommonFunction.showImage(messages.message,context,false)
+                }
             } else {
                 holder.imgMessageReceiverPicture?.visibility = View.VISIBLE
                 Glide.with(context).load(messages.message).into(holder.imgMessageReceiverPicture!!)
+
+                holder.imgMessageReceiverPicture?.setOnClickListener {
+                    CommonFunction.showImage(messages.message,context,false)
+                }
             }
         }
     }

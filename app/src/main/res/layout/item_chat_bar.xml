@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@color/colorPrimary"
@@ -12,45 +12,52 @@
 
         <ImageView
             android:id="@+id/imgBackChat"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="6dp"
             android:layout_marginEnd="10dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_back_arrow" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgItemChatProfile"
-            android:layout_width="47dp"
-            android:layout_height="47dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/profile_image"
-            android:layout_marginRight="10dp"
-            android:cropToPadding="true" />
-
-        <TextView
-            android:id="@+id/tvItemProfileName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/imgBackChat"
-            android:text="Display UserName"
-            android:textColor="@android:color/background_light"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/tvItemUserLastSeen"
-            android:layout_below="@id/tvItemProfileName"
+        <RelativeLayout
+            android:id="@+id/relativeChatBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@id/imgBackChat"
-            android:text="Last Seen"
-            android:textColor="@android:color/background_light"
-            android:textStyle="bold"
-            android:textSize="12sp"/>
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgItemChatProfile"
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/profile_image"
+                android:layout_marginRight="10dp"/>
+
+            <TextView
+                android:id="@+id/tvItemProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Display UserName"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tvItemUserLastSeen"
+                android:layout_below="@id/tvItemProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Last Seen"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold"
+                android:textSize="12sp"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

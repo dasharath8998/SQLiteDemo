@@ -4,12 +4,14 @@ package com.dasharath.chittichat2.ui.p2pchat
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_chats.view.*
 import kotlinx.android.synthetic.main.fragment_chats.view.aviLoading
 import kotlinx.android.synthetic.main.item_user_request_display.view.*
+import com.dasharath.chittichat2.utils.CommonFunction
+
 
 class ChatFragment : Fragment() {
 
@@ -40,7 +44,7 @@ class ChatFragment : Fragment() {
         currentUserId = mAuth?.currentUser?.uid!!
         chatRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.CONTACTS).child(currentUserId)
         userRef = FirebaseDatabase.getInstance().reference.child(CommonUtils.USERS_DB_REF)
-        view.aviLoading.smoothToShow()
+        view.aviLoading.show()
         return view
     }
 
@@ -73,7 +77,6 @@ class ChatFragment : Fragment() {
                         if (dataSnapshot.exists()) {
 
                             val name = dataSnapshot.child(CommonUtils.NAME).value.toString()
-//                            val status = dataSnapshot.child(CommonUtils.STATUS).value.toString()
                             var image = ""
 
                             if (dataSnapshot.hasChild(CommonUtils.IMAGE)) {
@@ -89,13 +92,23 @@ class ChatFragment : Fragment() {
                                         if(snapshot.exists()){
                                             val iterator = snapshot.children.last()
                                             val type = iterator.child("type").value.toString()
+                                            val status = iterator.child(CommonUtils.STATUS).value.toString()
+
+
+                                            if(status == CommonUtils.SENT){
+                                                holder.userStatus?.setTextColor(Color.parseColor("#E4394F"))
+                                                holder.tvNewMessage?.visibility = View.VISIBLE
+                                            } else {
+                                                holder.userStatus?.setTextColor(Color.parseColor("#3C3F41"))
+                                                holder.tvNewMessage?.visibility = View.GONE
+                                            }
 
                                             if(type == CommonUtils.IMAGE){
-                                                holder.userStatus?.text = "Image"
-                                                holder.userStatus?.setTextColor(Color.parseColor("#E4394F"))
+                                                holder.imgPhotoMessage?.visibility = View.VISIBLE
+                                                holder.userStatus?.text = "Photo"
                                             } else {
+                                                holder.imgPhotoMessage?.visibility = View.GONE
                                                 holder.userStatus?.text = iterator.child(CommonUtils.MESSAGE).value.toString()
-                                                holder.userStatus?.setTextColor(Color.parseColor("#3C3F41"))
                                             }
                                             Log.d("Snapshott",iterator.toString())
                                             Log.d("Snapshott",type.toString())
@@ -125,7 +138,11 @@ class ChatFragment : Fragment() {
                                     .putExtra(CommonUtils.IMAGE,image))
                             }
 
-                            view.aviLoading.smoothToHide()
+                            holder.profile?.setOnClickListener {
+                                CommonFunction.showImage(image,context!!,true)
+                            }
+
+                            view.aviLoading.hide()
                         }
                     }
 
@@ -139,11 +156,15 @@ class ChatFragment : Fragment() {
     class ChatsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var userName: TextView? = null
         var userStatus: TextView? = null
+        var tvNewMessage: TextView? = null
+        var imgPhotoMessage: ImageView? = null
         var profile: CircleImageView? = null
         init {
             userName = itemView.tvRequestProfileName
             userStatus = itemView.tvItemRequestStatus
             profile = itemView.imgItemUserRequestProfile
+            tvNewMessage = itemView.tvNewMessage
+            imgPhotoMessage = itemView.imgPhotoMessage
         }
     }
 }

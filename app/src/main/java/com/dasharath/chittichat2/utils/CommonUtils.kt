@@ -1,8 +1,19 @@
 package com.dasharath.chittichat2.utils
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.app.Activity
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import com.bumptech.glide.Glide
+import com.dasharath.chittichat2.R
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 object CommonUtils {
@@ -58,6 +69,30 @@ object CommonFunction{
             view = View(activity)
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    @SuppressLint("ResourceType")
+    fun showImage(imageUri: String, context: Context,isCircle: Boolean) {
+        var imageView: ImageView? = null
+        val builder = Dialog(context)
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        builder.window!!.setBackgroundDrawable(
+            ColorDrawable(Color.TRANSPARENT)
+        )
+
+        if(isCircle) {
+            imageView = CircleImageView(context)
+        } else {
+            imageView = ImageView(context)
+        }
+        Glide.with(context).load(imageUri).placeholder(R.drawable.profile_image).into(imageView)
+        builder.addContentView(
+            imageView, RelativeLayout.LayoutParams(
+                550,
+                650
+            )
+        )
+        builder.show()
     }
 
 }

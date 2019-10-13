@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.R
 import com.dasharath.chittichat2.models.ContactsModel
+import com.dasharath.chittichat2.utils.CommonFunction
 import com.dasharath.chittichat2.utils.CommonUtils
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -62,6 +63,7 @@ class RequestFragment : Fragment() {
                 val listUserId = getRef(position).getKey()
                 val getTypeRef = getRef(position).child(CommonUtils.REQUEST_TYPE).ref
 
+
                 getTypeRef.addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
 
@@ -96,14 +98,18 @@ class RequestFragment : Fragment() {
                                                     .error(R.drawable.profile_image)
                                                     .into(holder.profile!!)
                                             }
+
+                                            holder.profile?.setOnClickListener {
+                                                CommonFunction.showImage(image,context!!,true)
+                                            }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        holder.userName?.text = name
-                                            holder.userStatus?.setText("You have request Accepte or Cancel")
+                                            holder.userStatus?.setText("You have request Accept or Cancel")
 
                                             holder.itemView.setOnClickListener {
                                                 val itemOption: Array<CharSequence> = arrayOf<CharSequence>("Accept", "Delete", "Cancel")
 
                                                 val builder = AlertDialog.Builder(context!!)
-                                                builder.setTitle(name + " Chat Request")
+                                                builder.setTitle("Chat Request From $name")
                                                 builder.setItems(itemOption) { dialog, which ->
                                                     if(which == 0){
                                                         view.aviLoadingRequest.show()
@@ -172,6 +178,10 @@ class RequestFragment : Fragment() {
                                                 .into(holder.profile!!)
                                         }
 
+                                        holder.profile?.setOnClickListener {
+                                            CommonFunction.showImage(image,context!!,true)
+                                        }
+
                                         holder.userName?.text = name
                                         holder.userStatus?.setText("You have sent request to $name")
 
@@ -179,7 +189,7 @@ class RequestFragment : Fragment() {
                                             val itemOption: Array<CharSequence> = arrayOf<CharSequence>("Delete", "Cancel")
 
                                             val builder = AlertDialog.Builder(context!!)
-                                            builder.setTitle(name + " Aleredy sent request")
+                                            builder.setTitle("You sent request $name")
                                             builder.setItems(itemOption) { dialog, which ->
                                                 if(which == 0){
                                                     view.aviLoadingRequest.show()

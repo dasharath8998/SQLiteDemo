@@ -68,14 +68,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        val currentUser = mAuth?.currentUser
-        if (currentUser != null) {
-            updateUserStatus("offline")
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         val currentUser = mAuth?.currentUser

@@ -159,6 +159,7 @@ class SettingsActivity : AppCompatActivity() {
                                 MainActivity::class.java
                             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         )
+                        CommonFunction.hideKeyboard(this@SettingsActivity)
                         Toast.makeText(this@SettingsActivity, "Profile updated succesfully", Toast.LENGTH_LONG).show()
                     } else {
                         val message = it.exception.toString()
