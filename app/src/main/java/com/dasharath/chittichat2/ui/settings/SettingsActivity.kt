@@ -64,6 +64,9 @@ class SettingsActivity : AppCompatActivity() {
         userPfofileImagesRef =
             FirebaseStorage.getInstance().getReference().child(CommonUtils.PROFILE_IMAGES)
         loadingBar = ProgressDialog(this)
+        if(intent.getBooleanExtra("IsFirstTime",false)){
+            imgBack.visibility = View.GONE
+        }
     }
 
     private fun listeners() {

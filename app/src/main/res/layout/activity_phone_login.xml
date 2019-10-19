@@ -6,12 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".ui.phonelogin.PhoneLoginActivity">
 
+    <com.hbb20.CountryCodePicker
+        android:id="@+id/ccp"
+        app:ccp_defaultNameCode="US"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginTop="122dp"
+        android:background="@drawable/drawable_send_edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <EditText
         android:id="@+id/etPhoneNumberLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_marginStart="17dp"
+        android:inputType="phone"
         android:layout_marginEnd="17dp"
         android:layout_marginTop="180dp"
         android:background="@drawable/drawable_send_edittext"

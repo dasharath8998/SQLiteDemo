@@ -7,12 +7,19 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.R
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import de.hdodenhof.circleimageview.CircleImageView
 
 
@@ -93,6 +100,21 @@ object CommonFunction{
             )
         )
         builder.show()
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
+    fun showSnackBar(view:View,activity: Activity){
+        val snackbar = Snackbar.make(view,"No internet connection!!", Snackbar.LENGTH_INDEFINITE).setAction("Retry") {
+            activity.finish()
+            activity.startActivity(activity.intent)
+        }
+        snackbar.setActionTextColor(ContextCompat.getColor(activity,R.color.colorPrimaryDark))
+        snackbar.show()
     }
 
 }

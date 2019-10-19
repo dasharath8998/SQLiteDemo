@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                             Intent(
                                 this@MainActivity,
                                 SettingsActivity::class.java
-                            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK).putExtra("IsFirstTime",true)
                         )
                         finish()
                     }

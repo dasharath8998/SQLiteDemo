@@ -23,4 +23,24 @@
         app:indicatorColor="@color/colorPrimaryDark"
         android:layout_height="60dp"/>
 
+    <include
+        layout="@layout/layout_no_internet"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:id="@+id/btnFindNewFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttons"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:text="Find new friends"
+        android:textAllCaps="false"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp" />
+
 </RelativeLayout>

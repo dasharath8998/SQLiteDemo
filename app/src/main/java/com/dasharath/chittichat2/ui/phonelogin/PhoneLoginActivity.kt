@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.dasharath.chittichat2.MainActivity
 import com.dasharath.chittichat2.R
 import com.google.firebase.FirebaseException
@@ -38,7 +39,7 @@ class PhoneLoginActivity : AppCompatActivity() {
     private fun listeners() {
         btnSendVerificationCode.setOnClickListener {
 
-            val phoneNumber = etPhoneNumberLogin.text.toString()
+            val phoneNumber = "+${ccp.selectedCountryCode}${etPhoneNumberLogin.text}"
             if (TextUtils.isEmpty(phoneNumber)) {
                 Toast.makeText(
                     this@PhoneLoginActivity,
@@ -65,6 +66,7 @@ class PhoneLoginActivity : AppCompatActivity() {
         btnVerifyLogin.setOnClickListener {
             etPhoneNumberLogin.visibility = View.INVISIBLE
             btnSendVerificationCode.visibility = View.INVISIBLE
+            ccp.isVisible = false
             val verificationCode = etVerificationCode.text.toString()
 
             if(TextUtils.isEmpty(verificationCode)){
@@ -97,7 +99,7 @@ class PhoneLoginActivity : AppCompatActivity() {
                 btnVerifyLogin.visibility = View.INVISIBLE
                 Toast.makeText(
                     this@PhoneLoginActivity,
-                    "Invalide Phone, Please enter correct phone number with your country code",
+                    "Invalide Phone, Please correct your country code than try",
                     Toast.LENGTH_LONG
                 ).show()
             }

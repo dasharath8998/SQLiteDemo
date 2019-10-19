@@ -26,6 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_find_friends.*
 import kotlinx.android.synthetic.main.app_bar_layout.*
 import kotlinx.android.synthetic.main.item_user_request_display.view.*
+import kotlinx.android.synthetic.main.layout_no_internet.*
 
 class FindFriendsActivity : AppCompatActivity() {
 
@@ -33,10 +34,19 @@ class FindFriendsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_friends)
-        aviLoadingFF.show()
         init()
         listeners()
-        setAdapter()
+        if (CommonFunction.isOnline(this@FindFriendsActivity)) {
+            aviLoadingFF.show()
+            relativeNoIternet.isVisible = false
+            rvFindFriends.isVisible = true
+            setAdapter()
+        } else {
+            aviLoadingFF.hide()
+            CommonFunction.showSnackBar(window.decorView.rootView, this@FindFriendsActivity)
+            relativeNoIternet.isVisible = true
+            rvFindFriends.isVisible = false
+        }
     }
 
     private fun listeners() {
@@ -73,7 +83,7 @@ class FindFriendsActivity : AppCompatActivity() {
                     holder.userStatus?.text = model.status
                     Glide.with(this@FindFriendsActivity).load(model.image).placeholder(R.drawable.profile_image).error(R.drawable.profile_image).into(holder.profile!!)
                     holder.itemView.setOnClickListener {
-                        startActivity(Intent(this@FindFriendsActivity,ProfileActivity::class.java).putExtra(CommonUtils.UID,getRef(position).key))
+                        startActivity(Intent(this@FindFriendsActivity,ProfileActivity::class.java).putExtra(CommonUtils.UID,model.uid.toString()))
                     }
                     if(aviLoadingFF.isVisible) {
                         aviLoadingFF.hide()
