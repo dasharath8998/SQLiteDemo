@@ -23,9 +23,18 @@
                     android:id="@+id/imgItemUserRequestProfile"
                     tools:src="@drawable/profile_image"
                     android:layout_gravity="center"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
                     android:layout_margin="10dp" />
+
+                <ImageView
+                    android:id="@+id/imgGender"
+                    android:visibility="gone"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    tools:src="@drawable/ic_female"
+                    android:layout_gravity="bottom|end"
+                    android:tint="@color/colorPrimary"/>
 
                 <TextView
                     android:id="@+id/tvNewMessage"
@@ -73,7 +82,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,15 +102,24 @@
                     <TextView
                         android:id="@+id/tvItemRequestStatus"
                         android:layout_width="wrap_content"
+                        android:layout_toEndOf="@+id/imgPhotoMessage"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
                         android:layout_gravity="center"
                         android:ellipsize="end"
                         android:layout_marginEnd="20dp"
                         android:textSize="14sp"
-                        tools:text="My status ;skjkflksdjflg\" />
+                        tools:text="My status ;skjkflkzcf df dsdfl k lksdjflg\" />
 
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvCNC"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="()"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
 

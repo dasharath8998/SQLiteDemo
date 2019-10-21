@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -78,9 +80,24 @@ class FindFriendsActivity : AppCompatActivity() {
                     return FindFriendViewHolder(view)
                 }
 
+                @SuppressLint("SetTextI18n")
                 override fun onBindViewHolder(holder: FindFriendViewHolder, position: Int, model: ContactsModel) {
                     holder.userName?.text = model.name
                     holder.userStatus?.text = model.status
+                    holder.tvCNC?.visibility = View.VISIBLE
+
+
+                    holder.imgGender?.visibility = View.VISIBLE
+                    if(model.gender == "Male"){
+                        holder.imgGender?.setImageResource(R.drawable.ic_male)
+                    } else {
+                        holder.imgGender?.setImageResource(R.drawable.ic_female)
+                    }
+                    holder.imgGender?.setColorFilter(ContextCompat.getColor(this@FindFriendsActivity, R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.SRC_IN);
+
+                    if(model.countryCode != "")
+                        holder.tvCNC?.text = "(${model.countryCode})"
+
                     Glide.with(this@FindFriendsActivity).load(model.image).placeholder(R.drawable.profile_image).error(R.drawable.profile_image).into(holder.profile!!)
                     holder.itemView.setOnClickListener {
                         startActivity(Intent(this@FindFriendsActivity,ProfileActivity::class.java).putExtra(CommonUtils.UID,model.uid.toString()))
@@ -101,11 +118,15 @@ class FindFriendsActivity : AppCompatActivity() {
     class FindFriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var userName: TextView? = null
         var userStatus: TextView? = null
+        var tvCNC: TextView? = null
         var profile: CircleImageView? = null
+        var imgGender: ImageView? = null
         init {
             userName = itemView.tvRequestProfileName
             userStatus = itemView.tvItemRequestStatus
+            tvCNC = itemView.tvCNC
             profile = itemView.imgItemUserRequestProfile
+            imgGender = itemView.imgGender
         }
     }
 }

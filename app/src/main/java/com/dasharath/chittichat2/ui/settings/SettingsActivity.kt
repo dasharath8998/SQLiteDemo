@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.dasharath.chittichat2.utils.CommonFunction
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.hbb20.CountryCodePicker
 import kotlinx.android.synthetic.main.app_bar_layout.*
 
 
@@ -118,6 +119,12 @@ class SettingsActivity : AppCompatActivity() {
 
                         etSettingsUsername.setText(username)
                         etSettingsStatus.setText(status)
+                        ccpProfile.setCountryForNameCode(snapshot.child("countryCode").value.toString())
+                        if(snapshot.child("gender").value.toString() == "Female") {
+                            spinnerGender.setSelection(1)
+                        } else {
+                            spinnerGender.setSelection(0)
+                        }
 
                         if(networkFlag) {
                             Glide.with(this@SettingsActivity).load(image).into(imgSettingProfile)
@@ -127,10 +134,16 @@ class SettingsActivity : AppCompatActivity() {
 
                         val username = snapshot.child(CommonUtils.NAME).value.toString()
                         val status = snapshot.child(CommonUtils.STATUS).value.toString()
-                        val image = snapshot.child(CommonUtils.IMAGE).value.toString()
 
                         etSettingsUsername.setText(username)
                         etSettingsStatus.setText(status)
+                        ccpProfile.setCountryForNameCode(snapshot.child("countryCode").value.toString())
+
+                        if(snapshot.child("gender").value.toString() == "Female") {
+                            spinnerGender.setSelection(1)
+                        } else {
+                            spinnerGender.setSelection(0)
+                        }
 
                     } else {
                         Toast.makeText(this@SettingsActivity, "Please set & update your profile information", Toast.LENGTH_LONG).show()
@@ -147,12 +160,14 @@ class SettingsActivity : AppCompatActivity() {
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(this@SettingsActivity, "Please write your user name first....", Toast.LENGTH_LONG).show()
         } else if (TextUtils.isEmpty(status)) {
-            Toast.makeText(this@SettingsActivity, "Please write your statuse first....", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@SettingsActivity, "Please write your status first....", Toast.LENGTH_LONG).show()
         } else {
             val profile = HashMap<String, Any>()
             profile.put("uid", cuurentUserId)
             profile.put("name", username)
             profile.put("status", status)
+            profile.put("gender", spinnerGender.selectedItem.toString())
+            profile.put("countryCode", ccpProfile.selectedCountryNameCode)
             rootRef?.child(CommonUtils.USERS_DB_REF)?.child(cuurentUserId)?.updateChildren(profile)
                 ?.addOnCompleteListener {
                     if (it.isSuccessful) {

@@ -65,11 +65,56 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerGender"
+                android:entries="@array/gender"
+                android:layout_below="@id/etSettingsStatus"
+                android:layout_marginStart="15dp"
+                android:padding="10dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="15dp"
+                android:layout_gravity="center_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/linearCountry"
+                android:padding="10dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_below="@+id/spinnerGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text="Select your country"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"/>
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccpProfile"
+                    app:ccp_defaultNameCode="US"
+                    android:layout_marginStart="20dp"
+                    app:ccp_showPhoneCode="false"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/drawable_send_edittext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
             <Button
+                android:layout_marginBottom="60dp"
                 android:id="@+id/btnSettingsUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etSettingsStatus"
+                android:layout_below="@id/linearCountry"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginEnd="15dp"

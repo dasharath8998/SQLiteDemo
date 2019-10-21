@@ -4,9 +4,11 @@ data class ContactsModel(
     var name: String,
     var status: String,
     var image: String,
+    var gender: String,
+    var countryCode: String,
     var uid: String
 ){
-    constructor() : this("","","","")
+    constructor() : this("","","","","","")
 }
 
 data class Messages(
